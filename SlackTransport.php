@@ -69,13 +69,15 @@ final class SlackTransport extends AbstractTransport
         }
 
         $options = $opts ? $opts->toArray() : [];
-        $options['token'] = $this->accessToken;
         if (!isset($options['channel'])) {
             $options['channel'] = $message->getRecipientId() ?: $this->chatChannel;
         }
         $options['text'] = $message->getSubject();
         $response = $this->client->request('POST', 'https://'.$this->getEndpoint().'/api/chat.postMessage', [
             'body' => array_filter($options),
+            'headers' => [
+                'Authorization' => sprintf('Bearer %s', $this->accessToken)
+            ]
         ]);
 
         if (200 !== $response->getStatusCode()) {
