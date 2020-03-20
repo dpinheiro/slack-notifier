@@ -74,7 +74,7 @@ final class SlackTransport extends AbstractTransport
         }
         $options['text'] = $message->getSubject();
         $response = $this->client->request('POST', 'https://'.$this->getEndpoint().'/api/chat.postMessage', [
-            'body' => array_filter($options),
+            'json' => array_filter($options),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->accessToken
             ]
